@@ -3,6 +3,7 @@ name: 0_o
 on:
   schedule:
     - cron: '*/5 * * * *' # Каждые 5 минут
+  workflow_dispatch:
 
 jobs:
   update-and-commit:
