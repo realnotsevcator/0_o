@@ -2,13 +2,12 @@ name: 0_o
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # Каждые 5 минут
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
-  update-and-commit:
+  update:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -31,8 +30,4 @@ jobs:
         git add .
         current_date=$(date '+%Y-%m-%d %H:%M:%S')
         git commit -m "⚡ Updated at $current_date" || echo "No changes to commit"
-
-    - name: Push changes
-      uses: ad-m/github-push-action@v0.6.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        git push origin master
