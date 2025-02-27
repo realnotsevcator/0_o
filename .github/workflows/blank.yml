@@ -1,0 +1,37 @@
+name: 0_o
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # Каждые 5 минут
+
+jobs:
+  update-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget
+
+    - name: Download files
+      run: |
+        wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-ps1/main/zapret.ps1
+        wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/dnscrypt-ps1/main/dnscrypt.ps1
+        wget -N --no-if-modified-since https://github.com/sevcator/zapret-magisk/releases/latest/download/zapret-Magisk.zip
+
+    - name: Add changes to Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        current_date=$(date '+%Y-%m-%d %H:%M:%S')
+        git commit -m "⚡ Updated at $current_date" || echo "No changes to commit"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
