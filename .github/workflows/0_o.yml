@@ -30,4 +30,4 @@ jobs:
         git add .
         current_date=$(date '+%Y-%m-%d %H:%M:%S')
         git commit -m "⚡ Updated at $current_date" || echo "No changes to commit"
-        git push origin master
+        git push origin main
