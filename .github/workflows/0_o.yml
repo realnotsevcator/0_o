@@ -23,9 +23,9 @@ jobs:
         wget -N --no-if-modified-since https://github.com/sevcator/zapret-magisk/releases/latest/download/zapret-Magisk.zip
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/update.json
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/CHANGELOG.md
-        7z x zapret-Magisk.zip -oextracted_module
+        7z x zapret-Magisk.zip -o extracted_module
         sed -i "s|updateJson=https://raw.githubusercontent.com/[^ ]*|updateJson=https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/main/update.json|g" extracted_module/module.prop
-        7z a -tzip zapret-Magisk.zip extracted_module/* -mx=9
+        7z a ./zapret-Magisk ./extracted_module/*
         rm -rf extracted_module
         sed -i "s|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/zapret-ps1/raw/refs/heads/main/files|g" zapret.ps1
         sed -i "s|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/${MAIN_REPO}/raw/refs/heads/main/files|g" dnscrypt.ps1
