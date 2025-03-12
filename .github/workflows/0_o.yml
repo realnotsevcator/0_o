@@ -13,8 +13,10 @@ jobs:
       MAIN_REPO: ${{ secrets.MAIN_REPO }}
 
     steps:
-    - name: Update
+    - name: Checkout
     - uses: actions/checkout@v4
+
+    - name: Update
     - run: |
         sudo apt-get update && sudo apt-get install -y wget p7zip-full
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-ps1/main/zapret.ps1
