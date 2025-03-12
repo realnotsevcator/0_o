@@ -13,8 +13,8 @@ jobs:
       MAIN_REPO: ${{ secrets.MAIN_REPO }}
 
     steps:
+    - name: Update
     - uses: actions/checkout@v4
-
     - run: |
         sudo apt-get update && sudo apt-get install -y wget p7zip-full
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-ps1/main/zapret.ps1
@@ -22,21 +22,15 @@ jobs:
         wget -N --no-if-modified-since https://github.com/sevcator/zapret-magisk/releases/latest/download/zapret-Magisk.zip
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/update.json
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/CHANGELOG.md
-
-    - run: |
         7z x zapret-Magisk.zip -oextracted_module
         sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/|g" extracted_module/module.prop
         sed -i '2i\mirror link' extracted_module/module.prop
         7z a -tzip zapret-Magisk.zip extracted_module/* -mx=9
         rm -rf extracted_module
-
-    - run: |
         sed -i "s|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/zapret-ps1/raw/refs/heads/main/files|g" zapret.ps1
         sed -i "s|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/${MAIN_REPO}/raw/refs/heads/main/files|g" dnscrypt.ps1
         sed -i "s|https://github.com/sevcator/zapret-magisk/releases/download/.*\.zip|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/refs/heads/main/zapret-Magisk.zip|g" update.json
         sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/.*\.md|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/refs/heads/main/CHANGELOG.md|g" update.json
-
-    - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
