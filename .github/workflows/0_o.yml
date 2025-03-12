@@ -2,7 +2,7 @@ name: 0_o
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/70 * * * *'
   workflow_dispatch:
 
 jobs:
