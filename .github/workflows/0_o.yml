@@ -28,7 +28,7 @@ jobs:
 
     - run: |
         sed -i 's|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/zapret-ps1/raw/refs/heads/main/files|g' zapret.ps1
-        sed -i 's|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/0_o/raw/refs/heads/main/files|g' dnscrypt.ps1
+        sed -i 's|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/dnscrypt-ps1/raw/refs/heads/main/files|g' dnscrypt.ps1
 
     - run: |
         git config --local user.email "action@github.com"
