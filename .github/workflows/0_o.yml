@@ -2,7 +2,8 @@ name: 0_o
 
 on:
   schedule:
-    - cron: '*/70 * * * *'
+    - cron: '10 */1 * * *'  # Каждый час в 10 минут (интервал 70 мин между запусками)
+    - cron: '0 */1 * * *'   # Каждый час в 0 минут
   workflow_dispatch:
 
 jobs:
@@ -24,15 +25,21 @@ jobs:
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/update.json
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/CHANGELOG.md
         7z x zapret-Magisk.zip -oextracted_module
-        sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/.*|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/refs/heads/main/update.json|g" extracted_module/module.prop
+        echo "Before replacement:"
+        cat extracted_module/module.prop
+        sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/.*|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/main/update.json|g" extracted_module/module.prop
+        echo "After replacement:"
+        cat extracted_module/module.prop
         7z a -tzip zapret-Magisk.zip extracted_module/* -mx=9
         rm -rf extracted_module
         sed -i "s|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/zapret-ps1/raw/refs/heads/main/files|g" zapret.ps1
         sed -i "s|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/${MAIN_REPO}/raw/refs/heads/main/files|g" dnscrypt.ps1
-        sed -i "s|https://github.com/sevcator/zapret-magisk/releases/download/.*\.zip|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/refs/heads/main/zapret-Magisk.zip|g" update.json
-        sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/.*\.md|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/refs/heads/main/CHANGELOG.md|g" update.json
+        sed -i "s|https://github.com/sevcator/zapret-magisk/releases/download/.*\.zip|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/main/zapret-Magisk.zip|g" update.json
+        sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/.*\.md|https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/main/CHANGELOG.md|g" update.json
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git status
+        git diff
         git add .
         current_date=$(date '+%Y-%m-%d %H:%M:%S')
         git commit -m "⚡ Updated at $current_date" || echo "No changes to commit"
