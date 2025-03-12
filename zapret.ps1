@@ -101,7 +101,7 @@ function Download-Files($files, $baseUrl, $destination) {
         }
     }
 }
-$baseUrl = "https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files"
+$baseUrl = "https://github.com/realnotsevcator/zapret-ps1/raw/refs/heads/main/files"
 
 # Create directories
 if (-not (Test-Path $zapretDir)) {
