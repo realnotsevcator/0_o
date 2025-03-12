@@ -11,13 +11,12 @@ jobs:
     env:
       GH_USER: ${{ secrets.GH_USER }}
       MAIN_REPO: ${{ secrets.MAIN_REPO }}
-
     steps:
     - name: Checkout
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
     - name: Update
-    - run: |
+      run: |
         sudo apt-get update && sudo apt-get install -y wget p7zip-full
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-ps1/main/zapret.ps1
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/dnscrypt-ps1/main/dnscrypt.ps1
