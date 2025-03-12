@@ -24,7 +24,7 @@ jobs:
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/update.json
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/CHANGELOG.md
         
-        7z x zapret-Magisk.zip -o extracted_module
+        7z x zapret-Magisk.zip -oextracted_module
         rm zapret-Magisk.zip
         
         sed -i "s|updateJson=https://raw.githubusercontent.com/[^ ]*|updateJson=https://raw.githubusercontent.com/${GH_USER}/${MAIN_REPO}/main/update.json|g" extracted_module/module.prop
