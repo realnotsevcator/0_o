@@ -65,7 +65,7 @@ $baseFiles = @(
     "dnscrypt.cmd",
     "uninstall.ps1"
 )
-$baseUrl = "https://github.com/realnotsevcator/0_o/raw/refs/heads/main/files/"
+$baseUrl = "https://github.com/realnotsevcator/dnscrypt-ps1/raw/refs/heads/main/files/"
 function Download-Files($files, $baseUrl, $destination) {
     foreach ($file in $files) {
         try {
