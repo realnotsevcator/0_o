@@ -8,27 +8,30 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      GH_USER: ${{ secrets.GH_USER }}  # Задайте в Settings -> Secrets -> Actions
+
     steps:
     - uses: actions/checkout@v4
 
     - run: |
-        sudo apt-get update
-        sudo apt-get install -y wget p7zip-full
-
-    - run: |
+        sudo apt-get update && sudo apt-get install -y wget p7zip-full
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-ps1/main/zapret.ps1
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/dnscrypt-ps1/main/dnscrypt.ps1
         wget -N --no-if-modified-since https://github.com/sevcator/zapret-magisk/releases/latest/download/zapret-Magisk.zip
+        wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-magisk/main/update.json
 
     - run: |
         7z x zapret-Magisk.zip -oextracted_module
-        sed -i 's|https://raw.githubusercontent.com/sevcator/zapret-magisk/|https://raw.githubusercontent.com/realnotsevcator/0_o/|g' extracted_module/module.prop
+        sed -i "s|https://raw.githubusercontent.com/sevcator/zapret-magisk/|https://raw.githubusercontent.com/${GH_USER}/0_o/|g" extracted_module/module.prop
+        sed -i '2i\mirror link' extracted_module/module.prop
         7z a -tzip zapret-Magisk.zip extracted_module/* -mx=9
         rm -rf extracted_module
 
     - run: |
-        sed -i 's|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/zapret-ps1/raw/refs/heads/main/files|g' zapret.ps1
-        sed -i 's|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/dnscrypt-ps1/raw/refs/heads/main/files|g' dnscrypt.ps1
+        sed -i "s|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/zapret-ps1/raw/refs/heads/main/files|g" zapret.ps1
+        sed -i "s|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/${GH_USER}/0_o/raw/refs/heads/main/files|g" dnscrypt.ps1
+        sed -i "s|https://github.com/sevcator/zapret-magisk/releases/download/.*\.zip|https://raw.githubusercontent.com/${GH_USER}/0_o/refs/heads/main/zapret-Magisk.zip|g" update.json
 
     - run: |
         git config --local user.email "action@github.com"
