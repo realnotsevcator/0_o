@@ -9,22 +9,28 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Set up environment
-      run: |
+    - run: |
         sudo apt-get update
-        sudo apt-get install -y wget
+        sudo apt-get install -y wget p7zip-full
 
-    - name: Download files
-      run: |
+    - run: |
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/zapret-ps1/main/zapret.ps1
         wget -N --no-if-modified-since https://raw.githubusercontent.com/sevcator/dnscrypt-ps1/main/dnscrypt.ps1
         wget -N --no-if-modified-since https://github.com/sevcator/zapret-magisk/releases/latest/download/zapret-Magisk.zip
 
-    - name: Add changes to Git
-      run: |
+    - run: |
+        7z x zapret-Magisk.zip -oextracted_module
+        sed -i 's|https://raw.githubusercontent.com/sevcator/zapret-magisk/|https://raw.githubusercontent.com/realnotsevcator/0_o/|g' extracted_module/module.prop
+        7z a -tzip zapret-Magisk.zip extracted_module/* -mx=9
+        rm -rf extracted_module
+
+    - run: |
+        sed -i 's|https://github.com/sevcator/zapret-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/zapret-ps1/raw/refs/heads/main/files|g' zapret.ps1
+        sed -i 's|https://github.com/sevcator/dnscrypt-ps1/raw/refs/heads/main/files|https://github.com/realnotsevcator/0_o/raw/refs/heads/main/files|g' dnscrypt.ps1
+
+    - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
